@@ -4,18 +4,17 @@
 	"Author": "galzo",
 	"Actions": [
 		{
-			"Name": "Battery Monitor",
-			"UUID": "com.galzo.battery-monitor.battery-monitor",
+			"Name": "Battery",
+			"UUID": "com.galzo.battery-monitor.battery-status",
 			"Icon": "imgs/actions/counter/icon",
-			"Tooltip": "Displays battery State",
-			"PropertyInspectorPath": "ui/battery-monitor.html",
+			"Tooltip": "This action monitors & displays battery status",
+			"PropertyInspectorPath": "ui/battery-status.html",
 			"UserTitleEnabled": false,
 			"Controllers": [
 				"Keypad"
 			],
 			"States": [
 				{
-					"Image": "imgs/actions/counter/key",
 					"TitleAlignment": "bottom",
 					"FontSize": 11
 				}

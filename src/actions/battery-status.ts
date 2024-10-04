@@ -24,8 +24,8 @@ import {
   defaultBatteryData,
 } from "../consts/battery.consts";
 
-@action({ UUID: "com.galzo.battery-monitor.battery-monitor" })
-export class BatteryMonitorAction extends SingletonAction<BatteryMonitorSettings> {
+@action({ UUID: "com.galzo.battery-monitor.battery-status" })
+export class BatteryStatusAction extends SingletonAction<BatteryMonitorSettings> {
   private batteryPoller: BatteryDataPoller;
   private batteryData: ActionBatteryData;
 
