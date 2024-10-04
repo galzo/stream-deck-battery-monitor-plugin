@@ -4,18 +4,20 @@
 	"Author": "galzo",
 	"Actions": [
 		{
-			"Name": "Counter",
-			"UUID": "com.galzo.battery-monitor.increment",
+			"Name": "Battery Monitor",
+			"UUID": "com.galzo.battery-monitor.battery-monitor",
 			"Icon": "imgs/actions/counter/icon",
-			"Tooltip": "Displays a count, which increments by one on press.",
-			"PropertyInspectorPath": "ui/increment-counter.html",
+			"Tooltip": "Displays battery State",
+			"PropertyInspectorPath": "ui/battery-monitor.html",
+			"UserTitleEnabled": false,
 			"Controllers": [
 				"Keypad"
 			],
 			"States": [
 				{
 					"Image": "imgs/actions/counter/key",
-					"TitleAlignment": "middle"
+					"TitleAlignment": "bottom",
+					"FontSize": 11
 				}
 			]
 		}
