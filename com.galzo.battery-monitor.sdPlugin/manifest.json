@@ -2,6 +2,7 @@
 	"Name": "Battery Monitor",
 	"Version": "1.0.0.0",
 	"Author": "galzo",
+	"URL": "https://github.com/galzo/stream-deck-battery-monitor-plugin",
 	"Actions": [
 		{
 			"Name": "Battery",
