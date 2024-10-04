@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <title>Battery Monitor Settings</title>
+    <meta charset="utf-8" />
+    <script src="https://sdpi-components.dev/releases/v3/sdpi-components.js"></script>
+</head>
+
+<body>
+    <sdpi-item label="Show Info">
+        <sdpi-radio setting="informationType" columns="1" default="percent" onchange="handleRadioChange">
+            <option value="percent">Percent Left</option>
+            <option value="cycle-count">Charge Cycle Count</option>
+            <option value="time-left">Time Left</option>
+        </sdpi-radio>
+    </sdpi-item>
+    <sdpi-item label="Extra Info" id="chargingIndicatorItem" style="display: block;">
+        <sdpi-checkbox setting="hideChargingIndicator" label="Hide Charging Indicator"></sdpi-checkbox>
+    </sdpi-item>
+
+    <sdpi-item label="Base Color">
+        <sdpi-color setting="batteryBaseColor" default="#ffffff"></sdpi-color>    
+    </sdpi-item>
+    <sdpi-item label="Full battery Color">
+        <sdpi-color setting="fullBatteryColor" default="#33c759"></sdpi-color>
+    </sdpi-item>
+    <sdpi-item label="Medium battery Color" >
+        <sdpi-color setting="mediumBatteryColor" default="#ffd60a"></sdpi-color>
+    </sdpi-item>
+    <sdpi-item label="Empty battery Color">
+        <sdpi-color setting="emptyBatteryColor" default="#ff453a"></sdpi-color>
+    </sdpi-item>
+
+    <script type="text/javascript">
+        document.querySelector("sdpi-radio").addEventListener('valuechange', function (ev) {
+            const selectedValue = ev.target.value;
+            const chargingIndicatorItem = document.getElementById('chargingIndicatorItem');
+            // Show the charging indicator checkbox only if "Percent Left" is selected
+            if (selectedValue === 'percent') {
+                chargingIndicatorItem.style.display = 'block'; // Show checkbox
+            } else {
+                chargingIndicatorItem.style.display = 'none'; // Hide checkbox
+            }
+        });
+    </script>
+</body>
+
+</html>

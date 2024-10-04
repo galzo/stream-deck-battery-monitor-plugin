@@ -1,0 +1,48 @@
+{
+	"Name": "Battery Monitor",
+	"Version": "0.1.0.0",
+	"Author": "galzo",
+	"Actions": [
+		{
+			"Name": "Battery",
+			"UUID": "com.galzo.battery-monitor.battery-status",
+			"Icon": "imgs/actions/counter/icon",
+			"Tooltip": "This action monitors & displays battery status",
+			"PropertyInspectorPath": "ui/battery-status.html",
+			"UserTitleEnabled": false,
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"TitleAlignment": "bottom",
+					"FontSize": 11
+				}
+			]
+		}
+	],
+	"Category": "Battery Monitor",
+	"CategoryIcon": "imgs/plugin/category-icon",
+	"CodePath": "bin/plugin.js",
+	"Description": "Monitor your computer's battery in real time. see custom data such as battery percent, charging indicator, charge cycles, and time left. customize your battery's icon visuals with rich customization settings.",
+	"Icon": "imgs/plugin/marketplace",
+	"SDKVersion": 2,
+	"Software": {
+		"MinimumVersion": "6.4"
+	},
+	"OS": [
+		{
+			"Platform": "mac",
+			"MinimumVersion": "10.15"
+		},
+		{
+			"Platform": "windows",
+			"MinimumVersion": "10"
+		}
+	],
+	"Nodejs": {
+		"Version": "20",
+		"Debug": "enabled"
+	},
+	"UUID": "com.galzo.battery-monitor"
+}
