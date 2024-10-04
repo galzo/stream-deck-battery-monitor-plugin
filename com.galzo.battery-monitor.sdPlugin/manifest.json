@@ -6,7 +6,7 @@
 		{
 			"Name": "Battery",
 			"UUID": "com.galzo.battery-monitor.battery-status",
-			"Icon": "imgs/actions/counter/icon",
+			"Icon": "imgs/actions/battery-status/icon",
 			"Tooltip": "This action monitors & displays battery status",
 			"PropertyInspectorPath": "ui/battery-status.html",
 			"UserTitleEnabled": false,
@@ -15,6 +15,7 @@
 			],
 			"States": [
 				{
+					"Image": "imgs/actions/battery-status/key",
 					"TitleAlignment": "bottom",
 					"FontSize": 11
 				}
