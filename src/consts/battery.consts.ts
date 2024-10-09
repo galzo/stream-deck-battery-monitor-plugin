@@ -1,3 +1,4 @@
+import { BatteryInfoType } from "./../types/battery.types";
 import { ActionBatteryData } from "../types/battery.types";
 
 export const powerStateLowerThreshold = {

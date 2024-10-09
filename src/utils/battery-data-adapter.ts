@@ -2,9 +2,7 @@ import { powerStateLowerThreshold } from "../consts/battery.consts";
 import { BatteryPowerState, ActionBatteryData } from "../types/battery.types";
 import { Systeminformation } from "systeminformation";
 
-export const adaptBatteryData = (
-  battery: Systeminformation.BatteryData
-): ActionBatteryData => {
+export const adaptBatteryData = (battery: Systeminformation.BatteryData): ActionBatteryData => {
   return {
     percentage: battery.percent,
     hasBattery: battery.hasBattery,
@@ -12,9 +10,7 @@ export const adaptBatteryData = (
     timeRemaining: battery.timeRemaining,
     cycleCount: battery.cycleCount,
     isConnectedToPower: battery.acConnected,
-    powerState: battery.hasBattery
-      ? _resolveBatteryPowerState(battery.percent)
-      : null,
+    powerState: battery.hasBattery ? _resolveBatteryPowerState(battery.percent) : null,
   };
 };
 

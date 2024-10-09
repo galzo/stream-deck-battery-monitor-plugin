@@ -9,12 +9,14 @@ export type ActionBatteryData = {
 };
 
 export type BatteryPowerState = "high" | "medium" | "low" | "veryLow";
-
+export type BatteryInfoType = "percent" | "cycle-count" | "time-left";
+export type BatteryDisplayType = "circle" | "bar";
 /**
  * Settings for {@link BatteryMonitorAction}.
  */
 export type BatteryMonitorSettings = {
-  informationType: "percent" | "cycle-count" | "time-left";
+  informationType: BatteryInfoType;
+  displayType: BatteryDisplayType;
   hideChargingIndicator: boolean;
 
   batteryBaseColor: string;

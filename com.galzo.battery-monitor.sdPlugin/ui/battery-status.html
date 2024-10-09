@@ -8,19 +8,25 @@
 </head>
 
 <body>
-    <sdpi-item label="Show Info">
+    <sdpi-item label="Display Type">
+        <sdpi-radio setting="displayType" columns="1" default="bar" onchange="handleRadioChange">
+            <option value="bar">Bar</option>
+            <option value="circle">Circle</option>
+        </sdpi-radio>
+    </sdpi-item>
+    <sdpi-item label="Show Info" id="showInfoItem" style="display: block;">
         <sdpi-radio setting="informationType" columns="1" default="percent" onchange="handleRadioChange">
             <option value="percent">Percent Left</option>
             <option value="cycle-count">Charge Cycle Count</option>
             <option value="time-left">Time Left</option>
         </sdpi-radio>
     </sdpi-item>
-    <sdpi-item label="Extra Info" id="chargingIndicatorItem" style="display: block;">
+    <sdpi-item label="Extra Info" id="extraInfoItem" style="display: block;">
         <sdpi-checkbox setting="hideChargingIndicator" label="Hide Charging Indicator"></sdpi-checkbox>
     </sdpi-item>
 
     <sdpi-item label="Base Color">
-        <sdpi-color setting="batteryBaseColor" default="#ffffff"></sdpi-color>    
+        <sdpi-color setting="batteryBaseColor" default="#ffffff"></sdpi-color>
     </sdpi-item>
     <sdpi-item label="Full battery Color">
         <sdpi-color setting="fullBatteryColor" default="#33c759"></sdpi-color>
@@ -33,14 +39,24 @@
     </sdpi-item>
 
     <script type="text/javascript">
-        document.querySelector("sdpi-radio").addEventListener('valuechange', function (ev) {
+        document.querySelector("sdpi-radio[setting='informationType']").addEventListener('valuechange', function (ev) {
             const selectedValue = ev.target.value;
-            const chargingIndicatorItem = document.getElementById('chargingIndicatorItem');
+            const extraInfoItem = document.getElementById('extraInfoItem');
             // Show the charging indicator checkbox only if "Percent Left" is selected
             if (selectedValue === 'percent') {
-                chargingIndicatorItem.style.display = 'block'; // Show checkbox
+                extraInfoItem.style.display = 'block'; // Show checkbox
             } else {
-                chargingIndicatorItem.style.display = 'none'; // Hide checkbox
+                extraInfoItem.style.display = 'none'; // Hide checkbox
+            }
+        });
+        document.querySelector("sdpi-radio[setting='displayType']").addEventListener('valuechange', function (ev) {
+            const selectedValue = ev.target.value;
+            const showInfoItem = document.getElementById('showInfoItem');
+            // Show the charging indicator checkbox only if "Percent Left" is selected
+            if (selectedValue === 'bar') {
+                showInfoItem.style.display = 'block'; // Show checkbox
+            } else {
+                showInfoItem.style.display = 'none'; // Hide checkbox
             }
         });
     </script>
