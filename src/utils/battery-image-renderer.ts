@@ -1,13 +1,6 @@
-import {
-  BatteryPowerState,
-  ActionBatteryData,
-  BatteryMonitorSettings,
-} from "../types/battery.types";
+import { BatteryPowerState, ActionBatteryData, BatteryMonitorSettings } from "../types/battery.types";
 
-const _resolveBatteryFillColor = (
-  powerState: BatteryPowerState | null,
-  settings: BatteryMonitorSettings
-) => {
+const _resolveBatteryFillColor = (powerState: BatteryPowerState | null, settings: BatteryMonitorSettings) => {
   if (!powerState) {
     return "#000000";
   }
@@ -31,10 +24,69 @@ const _resolveBatteryFillWidth = (percentage: number) => {
   return Math.max(6, (percentage / 100) * 74);
 };
 
-export const renderBatteryImage = (
-  battery: ActionBatteryData,
-  settings: BatteryMonitorSettings
-) => {
+export const renderBattery = (battery: ActionBatteryData, settings: BatteryMonitorSettings) => {
+  switch (settings.displayType) {
+    case "circle":
+      return renderBatteryCircle(battery, settings);
+    case "bar":
+    default:
+      return renderBatteryBar(battery, settings);
+  }
+};
+
+const renderBatteryCircle = (battery: ActionBatteryData, settings: BatteryMonitorSettings) => {
+  const validPercentage = Math.max(0, Math.min(100, battery.percentage ?? 0));
+  const baseColor = settings.batteryBaseColor ?? "white";
+  const fillColor = _resolveBatteryFillColor(battery.powerState, settings);
+
+  // Calculate the arc length based on the percentage
+  const radius = 60;
+  const circumference = 2 * Math.PI * radius;
+  const arcLength = (circumference * validPercentage) / 100;
+  const dashOffset = circumference - arcLength;
+
+  // Determine the path for the circle
+  const circlePath = `M72 12a60 60 0 1 1 0 120 60 60 0 1 1 0 -120`;
+
+  return `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144 144">
+      <!-- Background circle -->
+      <path
+        d="${circlePath}"
+        fill="none"
+        stroke="#3b3b3b"
+        stroke-width="12"
+        stroke-linecap="round"
+      />
+
+      <!-- Filled portion -->
+      <path
+        d="${circlePath}"
+        fill="none"
+        stroke="${fillColor}"
+        stroke-width="12"
+        stroke-linecap="round"
+        stroke-dasharray="${circumference}"
+        stroke-dashoffset="${dashOffset}"
+      />
+
+      <!-- Percentage text -->
+      <text
+        x="72"
+        y="82"
+        font-family="Arial, sans-serif"
+        font-size="36"
+        fill="${baseColor}"
+        text-anchor="middle"
+        dominant-baseline="middle"
+      >
+        ${validPercentage}%
+      </text>
+    </svg>
+  `.trim();
+};
+
+const renderBatteryBar = (battery: ActionBatteryData, settings: BatteryMonitorSettings) => {
   const validPercentage = Math.max(0, Math.min(100, battery.percentage ?? 0));
   const baseColor = settings.batteryBaseColor ?? "white";
   const fillWidth = _resolveBatteryFillWidth(validPercentage);
@@ -54,7 +106,7 @@ export const renderBatteryImage = (
         stroke="${baseColor}"
         stroke-width="6"
       />
-      
+
       <!-- Battery terminal -->
       <rect
         x="114"
@@ -65,7 +117,7 @@ export const renderBatteryImage = (
         ry="4"
         fill="${baseColor}"
       />
-      
+
       <!-- Battery fill -->
       <rect
         x="34"
