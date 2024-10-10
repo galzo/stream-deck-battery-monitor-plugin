@@ -17,7 +17,6 @@ export type BatteryDisplayType = "circle" | "bar";
 export type BatteryMonitorSettings = {
   informationType: BatteryInfoType;
   displayType: BatteryDisplayType;
-  hideChargingIndicator: boolean;
 
   batteryBaseColor: string;
   fullBatteryColor: string;

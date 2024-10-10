@@ -21,9 +21,6 @@
             <option value="time-left">Time Left</option>
         </sdpi-radio>
     </sdpi-item>
-    <sdpi-item label="Extra Info" id="extraInfoItem" style="display: block;">
-        <sdpi-checkbox setting="hideChargingIndicator" label="Hide Charging Indicator"></sdpi-checkbox>
-    </sdpi-item>
 
     <sdpi-item label="Base Color">
         <sdpi-color setting="batteryBaseColor" default="#ffffff"></sdpi-color>
@@ -39,16 +36,6 @@
     </sdpi-item>
 
     <script type="text/javascript">
-        document.querySelector("sdpi-radio[setting='informationType']").addEventListener('valuechange', function (ev) {
-            const selectedValue = ev.target.value;
-            const extraInfoItem = document.getElementById('extraInfoItem');
-            // Show the charging indicator checkbox only if "Percent Left" is selected
-            if (selectedValue === 'percent') {
-                extraInfoItem.style.display = 'block'; // Show checkbox
-            } else {
-                extraInfoItem.style.display = 'none'; // Hide checkbox
-            }
-        });
         document.querySelector("sdpi-radio[setting='displayType']").addEventListener('valuechange', function (ev) {
             const selectedValue = ev.target.value;
             const showInfoItem = document.getElementById('showInfoItem');

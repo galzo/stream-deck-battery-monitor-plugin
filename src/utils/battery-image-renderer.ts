@@ -1,13 +1,6 @@
-import {
-  BatteryPowerState,
-  ActionBatteryData,
-  BatteryMonitorSettings,
-} from "../types/battery.types";
+import { BatteryPowerState, ActionBatteryData, BatteryMonitorSettings } from "../types/battery.types";
 
-const _resolveBatteryFillColor = (
-  powerState: BatteryPowerState | null,
-  settings: BatteryMonitorSettings
-) => {
+const _resolveBatteryFillColor = (powerState: BatteryPowerState | null, settings: BatteryMonitorSettings) => {
   if (!powerState) {
     return "#000000";
   }
@@ -31,10 +24,7 @@ const _resolveBatteryFillWidth = (percentage: number) => {
   return Math.max(6, (percentage / 100) * 74);
 };
 
-export const renderBattery = (
-  battery: ActionBatteryData,
-  settings: BatteryMonitorSettings
-) => {
+export const renderBattery = (battery: ActionBatteryData, settings: BatteryMonitorSettings) => {
   switch (settings.displayType) {
     case "circle":
       return renderBatteryCircle(battery, settings);
@@ -44,10 +34,51 @@ export const renderBattery = (
   }
 };
 
-const renderBatteryCircle = (
-  battery: ActionBatteryData,
-  settings: BatteryMonitorSettings
-) => {
+const renderCircleChargingBolt = () => {
+  return `<g transform="translate(24, 60)">
+        <!-- Lightning bolt shadow -->
+        <path
+          d="M71 52l-6 18h11l-14 22 6-18h-11l14-22z"
+          fill="#B8860B"
+          stroke="#B8860B"
+          stroke-width="1.5"
+          stroke-linejoin="round"
+          transform="translate(6.5, 1.5) scale(0.6)"
+        />
+        <!-- Lightning bolt -->
+        <path
+          d="M71 52l-6 18h11l-14 22 6-18h-11l14-22z"
+          fill="#FFD60A"
+          stroke="#ffae00"
+          stroke-width="1.5"
+          stroke-linejoin="round"
+          transform="translate(5, 0) scale(0.6)"
+        />
+      </g>`;
+};
+
+const renderBarChargingBolt = () => {
+  return `<!-- Lightning bolt shadow -->
+      <path
+        d="M71 52l-6 18h11l-14 22 6-18h-11l14-22z"
+        fill="#B8860B"
+        stroke="#B8860B"
+        stroke-width="1.5"
+        stroke-linejoin="round"
+        transform="translate(6.5, 1.5)"
+      />
+      <!-- Lightning bolt -->
+      <path
+        d="M71 52l-6 18h11l-14 22 6-18h-11l14-22z"
+        fill="#FFD60A"
+        stroke="#ffae00"
+        stroke-width="1.5"
+        stroke-linejoin="round"
+        transform="translate(5, -1)"
+      />`;
+};
+
+const renderBatteryCircle = (battery: ActionBatteryData, settings: BatteryMonitorSettings) => {
   const validPercentage = Math.max(0, Math.min(100, battery.percentage ?? 0));
   const baseColor = settings.batteryBaseColor ?? "white";
   const fillColor = _resolveBatteryFillColor(battery.powerState, settings);
@@ -60,6 +91,9 @@ const renderBatteryCircle = (
 
   // Determine the path for the circle
   const circlePath = `M72 12a60 60 0 1 1 0 120 60 60 0 1 1 0 -120`;
+
+  const shouldRenderChargingIcon = battery.isCharging || battery.isConnectedToPower;
+  const chargingIcon = shouldRenderChargingIcon ? renderCircleChargingBolt() : "";
 
   return `
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144 144">
@@ -86,7 +120,7 @@ const renderBatteryCircle = (
       <!-- Percentage text -->
       <text
         x="72"
-        y="82"
+        y="84"
         font-family="Arial, sans-serif"
         font-size="36"
         fill="${baseColor}"
@@ -95,19 +129,19 @@ const renderBatteryCircle = (
       >
         ${validPercentage}%
       </text>
+      ${chargingIcon}
     </svg>
   `.trim();
 };
 
-const renderBatteryBar = (
-  battery: ActionBatteryData,
-  settings: BatteryMonitorSettings
-) => {
+const renderBatteryBar = (battery: ActionBatteryData, settings: BatteryMonitorSettings) => {
   const validPercentage = Math.max(0, Math.min(100, battery.percentage ?? 0));
   const baseColor = settings.batteryBaseColor ?? "white";
   const fillWidth = _resolveBatteryFillWidth(validPercentage);
   const fillColor = _resolveBatteryFillColor(battery.powerState, settings);
-  const isCharging = battery.isConnectedToPower ?? false;
+
+  const shouldRenderChargingIcon = battery.isCharging || battery.isConnectedToPower;
+  const chargingIcon = shouldRenderChargingIcon ? renderBarChargingBolt() : "";
 
   return `
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144 144">
@@ -145,23 +179,7 @@ const renderBatteryBar = (
         ry="4"
         fill="${fillColor}"
       />
-
-      ${
-        isCharging
-          ? `
-      <!-- Lightning bolt -->
-       <path
-        d="M69 50l-7 22h14l-18 28 7-22h-14l18-28z"
-        fill="#FFD60A"
-        stroke="black"
-        stroke-width="2"
-        stroke-linejoin="round"
-        transform="translate(5, -3)"
-      />
-
-      `
-          : ""
-      }
+      ${chargingIcon}
     </svg>
   `.trim();
 };
