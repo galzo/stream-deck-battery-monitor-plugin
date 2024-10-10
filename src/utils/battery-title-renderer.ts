@@ -1,6 +1,12 @@
-import { ActionBatteryData, BatteryMonitorSettings } from "../types/battery.types";
+import {
+  ActionBatteryData,
+  BatteryMonitorSettings,
+} from "../types/battery.types";
 
-const _adaptBatteryPercentage = (battery: ActionBatteryData, settings: BatteryMonitorSettings) => {
+const _adaptBatteryPercentage = (
+  battery: ActionBatteryData,
+  settings: BatteryMonitorSettings
+) => {
   if (!battery.hasBattery || battery.percentage === undefined) {
     return "N/A";
   }
@@ -9,7 +15,9 @@ const _adaptBatteryPercentage = (battery: ActionBatteryData, settings: BatteryMo
     return "☠️";
   }
 
-  const isChargeIconVisible = (battery.isCharging || battery.isConnectedToPower) && !settings.hideChargingIndicator;
+  const isChargeIconVisible =
+    (battery.isCharging || battery.isConnectedToPower) &&
+    !settings.hideChargingIndicator;
 
   return `${isChargeIconVisible ? "⚡️" : " "}${battery.percentage}%`;
 };
@@ -27,14 +35,21 @@ const _adaptTimeLeft = (battery: ActionBatteryData) => {
     return "N/A";
   }
 
-  if (battery.isCharging || battery.isConnectedToPower || battery.timeRemaining < 2) {
+  if (
+    battery.isCharging ||
+    battery.isConnectedToPower ||
+    battery.timeRemaining < 2
+  ) {
     return "♾️";
   }
 
   return `${Math.round(battery.timeRemaining / 60)} Hrs`;
 };
 
-export const renderBatteryTitle = (battery: ActionBatteryData, settings: BatteryMonitorSettings) => {
+export const renderBatteryTitle = (
+  battery: ActionBatteryData,
+  settings: BatteryMonitorSettings
+) => {
   if (settings.displayType === "circle") {
     return "";
   }

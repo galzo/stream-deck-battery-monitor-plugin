@@ -1,6 +1,13 @@
-import { BatteryPowerState, ActionBatteryData, BatteryMonitorSettings } from "../types/battery.types";
+import {
+  BatteryPowerState,
+  ActionBatteryData,
+  BatteryMonitorSettings,
+} from "../types/battery.types";
 
-const _resolveBatteryFillColor = (powerState: BatteryPowerState | null, settings: BatteryMonitorSettings) => {
+const _resolveBatteryFillColor = (
+  powerState: BatteryPowerState | null,
+  settings: BatteryMonitorSettings
+) => {
   if (!powerState) {
     return "#000000";
   }
@@ -24,7 +31,10 @@ const _resolveBatteryFillWidth = (percentage: number) => {
   return Math.max(6, (percentage / 100) * 74);
 };
 
-export const renderBattery = (battery: ActionBatteryData, settings: BatteryMonitorSettings) => {
+export const renderBattery = (
+  battery: ActionBatteryData,
+  settings: BatteryMonitorSettings
+) => {
   switch (settings.displayType) {
     case "circle":
       return renderBatteryCircle(battery, settings);
@@ -34,7 +44,10 @@ export const renderBattery = (battery: ActionBatteryData, settings: BatteryMonit
   }
 };
 
-const renderBatteryCircle = (battery: ActionBatteryData, settings: BatteryMonitorSettings) => {
+const renderBatteryCircle = (
+  battery: ActionBatteryData,
+  settings: BatteryMonitorSettings
+) => {
   const validPercentage = Math.max(0, Math.min(100, battery.percentage ?? 0));
   const baseColor = settings.batteryBaseColor ?? "white";
   const fillColor = _resolveBatteryFillColor(battery.powerState, settings);
@@ -86,11 +99,15 @@ const renderBatteryCircle = (battery: ActionBatteryData, settings: BatteryMonito
   `.trim();
 };
 
-const renderBatteryBar = (battery: ActionBatteryData, settings: BatteryMonitorSettings) => {
+const renderBatteryBar = (
+  battery: ActionBatteryData,
+  settings: BatteryMonitorSettings
+) => {
   const validPercentage = Math.max(0, Math.min(100, battery.percentage ?? 0));
   const baseColor = settings.batteryBaseColor ?? "white";
   const fillWidth = _resolveBatteryFillWidth(validPercentage);
   const fillColor = _resolveBatteryFillColor(battery.powerState, settings);
+  const isCharging = battery.isConnectedToPower ?? false;
 
   return `
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144 144">
@@ -128,6 +145,23 @@ const renderBatteryBar = (battery: ActionBatteryData, settings: BatteryMonitorSe
         ry="4"
         fill="${fillColor}"
       />
+
+      ${
+        isCharging
+          ? `
+      <!-- Lightning bolt -->
+       <path
+        d="M69 50l-7 22h14l-18 28 7-22h-14l18-28z"
+        fill="#FFD60A"
+        stroke="black"
+        stroke-width="2"
+        stroke-linejoin="round"
+        transform="translate(5, -3)"
+      />
+
+      `
+          : ""
+      }
     </svg>
   `.trim();
 };
