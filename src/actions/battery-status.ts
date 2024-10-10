@@ -2,6 +2,7 @@ import streamDeck, {
   action,
   DidReceiveSettingsEvent,
   ImageOptions,
+  KeyDownEvent,
   SingletonAction,
   Target,
   WillAppearEvent,
@@ -15,6 +16,7 @@ import { adaptBatteryData } from "../utils/battery-data-adapter";
 import { renderBattery } from "../utils/battery-image-renderer";
 import { renderBatteryTitle } from "../utils/battery-title-renderer";
 import { batteryDataPollingRoundMs, defaultBatteryData } from "../consts/battery.consts";
+import { lunchBatterySettings } from "../utils/battery-settings-luncher";
 
 @action({ UUID: "com.galzo.battery-monitor.battery-status" })
 export class BatteryStatusAction extends SingletonAction<BatteryMonitorSettings> {
@@ -25,6 +27,10 @@ export class BatteryStatusAction extends SingletonAction<BatteryMonitorSettings>
     super();
     this.batteryPoller = new BatteryDataPoller();
     this.batteryData = defaultBatteryData;
+  }
+
+  override async onKeyDown(ev: KeyDownEvent<BatteryMonitorSettings>): Promise<void> {
+    await lunchBatterySettings();
   }
 
   private async setBatteryData(

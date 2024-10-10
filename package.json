@@ -19,6 +19,7 @@
     },
     "dependencies": {
         "@elgato/streamdeck": "^1.0.0",
+        "run-applescript": "^7.0.0",
         "systeminformation": "^5.23.5"
     }
 }
