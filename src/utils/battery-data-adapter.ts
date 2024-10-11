@@ -3,8 +3,6 @@ import { BatteryPowerState, ActionBatteryData } from "../types/battery.types";
 import { Systeminformation } from "systeminformation";
 
 export const adaptBatteryData = (battery: Systeminformation.BatteryData): ActionBatteryData => {
-  battery.hasBattery = false;
-
   return {
     percentage: battery.percent,
     hasBattery: battery.hasBattery,

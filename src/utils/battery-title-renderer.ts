@@ -1,6 +1,5 @@
 import streamDeck from "@elgato/streamdeck";
 import { ActionBatteryData, BatteryMonitorSettings } from "../types/battery.types";
-import { _isDataValid } from "./battery-data-adapter";
 
 const _adaptBatteryPercentage = (battery: ActionBatteryData, settings: BatteryMonitorSettings) => {
   if (!battery.hasBattery || battery.percentage === undefined) {
@@ -24,11 +23,17 @@ const _adaptTimeLeft = (battery: ActionBatteryData) => {
     return "N/A";
   }
 
-  if (battery.isCharging || battery.isConnectedToPower || battery.timeRemaining < 2) {
+  if (battery.isCharging || battery.isConnectedToPower) {
     return "♾️";
   }
 
-  return `${Math.round(battery.timeRemaining / 60)} Hrs`;
+  const timeLeftHrs = battery.timeRemaining / 60;
+  if (timeLeftHrs < 1) {
+    return "< 1 Hr";
+  }
+
+  const adaptedTimeLeftHrs = timeLeftHrs > 10 ? "10+" : Math.round(timeLeftHrs);
+  return `${adaptedTimeLeftHrs} Hrs`;
 };
 
 export const renderBatteryTitle = (battery: ActionBatteryData, settings: BatteryMonitorSettings) => {

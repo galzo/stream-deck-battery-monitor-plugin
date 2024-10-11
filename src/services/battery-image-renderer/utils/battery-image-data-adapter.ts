@@ -1,5 +1,5 @@
 import { batteryDefaultColors } from "../../../consts/battery.consts";
-import { BatteryPowerState } from "../../../types/battery.types";
+import { BatteryMonitorSettings, BatteryPowerState } from "../../../types/battery.types";
 
 export const resolveBatteryFillColor = (powerState: BatteryPowerState | null, settings: BatteryMonitorSettings) => {
   if (!powerState) {

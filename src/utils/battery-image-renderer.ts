@@ -1,5 +1,4 @@
 import { batteryDefaultColors } from "./../consts/battery.consts";
-import { batteryDefaultColors } from "../consts/battery.consts";
 import {
   batteryBarChargingIndicatorSvg,
   batteryBarSvg,
