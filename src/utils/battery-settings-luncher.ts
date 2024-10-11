@@ -1,19 +1,31 @@
 import streamDeck from "@elgato/streamdeck";
 import { runAppleScript } from "run-applescript";
+import { exec } from "child_process";
+import { promisify } from "util";
+
+const execAsync = promisify(exec);
+
+const _lunchMacOSBatterySettings = async () => {
+  streamDeck.logger.info("Lunching battery settings on macOS");
+  await execAsync("open x-apple.systempreferences:com.apple.preference.battery");
+};
+
+const _lunchWindowsBatterySettings = async () => {
+  streamDeck.logger.info("Lunching battery settings on windows");
+  await execAsync("control.exe powercfg.cpl");
+};
 
 export const lunchBatterySettings = async () => {
-  streamDeck.logger.info("here?");
-  await runAppleScript(`tell application "System Settings"
-    activate
-end tell
+  if (process.platform === "darwin") {
+    await _lunchMacOSBatterySettings();
+    return;
+  }
 
-delay 1 -- wait for System Settings to open
+  if (process.platform === "win32") {
+    await _lunchWindowsBatterySettings();
+    return;
+  }
 
-tell application "System Events"
-	tell process "System Settings"
-		-- Navigate to the Battery menu
-		click menu item "Battery" of menu "View" of menu bar item "View" of menu bar 1
-	end tell
-end tell
-`);
+  streamDeck.logger.error("Unsupported platform");
+  throw new Error("Unsupported platform");
 };
