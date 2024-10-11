@@ -26,6 +26,5 @@ export const lunchBatterySettings = async () => {
     return;
   }
 
-  streamDeck.logger.error("Unsupported platform");
   throw new Error("Unsupported platform");
 };

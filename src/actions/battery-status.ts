@@ -30,7 +30,12 @@ export class BatteryStatusAction extends SingletonAction<BatteryMonitorSettings>
   }
 
   override async onKeyDown(ev: KeyDownEvent<BatteryMonitorSettings>): Promise<void> {
-    await lunchBatterySettings();
+    try {
+      await lunchBatterySettings();
+    } catch (e) {
+      streamDeck.logger.error(e);
+      ev.action.showAlert();
+    }
   }
 
   private async setBatteryData(
