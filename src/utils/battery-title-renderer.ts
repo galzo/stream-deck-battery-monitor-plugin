@@ -1,4 +1,6 @@
+import streamDeck from "@elgato/streamdeck";
 import { ActionBatteryData, BatteryMonitorSettings } from "../types/battery.types";
+import { _isDataValid } from "./battery-data-adapter";
 
 const _adaptBatteryPercentage = (battery: ActionBatteryData, settings: BatteryMonitorSettings) => {
   if (!battery.hasBattery || battery.percentage === undefined) {
@@ -30,6 +32,10 @@ const _adaptTimeLeft = (battery: ActionBatteryData) => {
 };
 
 export const renderBatteryTitle = (battery: ActionBatteryData, settings: BatteryMonitorSettings) => {
+  if (!battery.isValid) {
+    return "No battery";
+  }
+
   if (settings.displayType === "circle") {
     return "";
   }

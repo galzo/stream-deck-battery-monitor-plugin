@@ -6,6 +6,7 @@ export type ActionBatteryData = {
   timeRemaining?: number;
   cycleCount?: number;
   powerState: BatteryPowerState | null;
+  isValid: boolean;
 };
 
 export type BatteryPowerState = "high" | "medium" | "low" | "veryLow";
@@ -17,7 +18,9 @@ export type BatteryDisplayType = "circle" | "bar";
 export type BatteryMonitorSettings = {
   informationType: BatteryInfoType;
   displayType: BatteryDisplayType;
+} & BatteryMonitorColors;
 
+export type BatteryMonitorColors = {
   batteryBaseColor: string;
   fullBatteryColor: string;
   mediumBatteryColor: string;

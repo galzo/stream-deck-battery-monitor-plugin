@@ -3,6 +3,8 @@ import { BatteryPowerState, ActionBatteryData } from "../types/battery.types";
 import { Systeminformation } from "systeminformation";
 
 export const adaptBatteryData = (battery: Systeminformation.BatteryData): ActionBatteryData => {
+  battery.hasBattery = false;
+
   return {
     percentage: battery.percent,
     hasBattery: battery.hasBattery,
@@ -11,6 +13,7 @@ export const adaptBatteryData = (battery: Systeminformation.BatteryData): Action
     cycleCount: battery.cycleCount,
     isConnectedToPower: battery.acConnected,
     powerState: battery.hasBattery ? _resolveBatteryPowerState(battery.percent) : null,
+    isValid: _isDataValid(battery),
   };
 };
 
@@ -28,4 +31,8 @@ const _resolveBatteryPowerState = (percentage: number): BatteryPowerState => {
   }
 
   return "veryLow";
+};
+
+const _isDataValid = (battery: Systeminformation.BatteryData) => {
+  return battery && battery.hasBattery && battery.percent !== undefined;
 };

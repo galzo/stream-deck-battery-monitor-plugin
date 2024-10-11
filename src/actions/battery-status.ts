@@ -13,7 +13,7 @@ import si from "systeminformation";
 import { BatteryDataPoller } from "../utils/battery-data-poller";
 import type { ActionBatteryData, BatteryMonitorSettings } from "../types/battery.types";
 import { adaptBatteryData } from "../utils/battery-data-adapter";
-import { renderBattery } from "../utils/battery-image-renderer";
+import { renderBatteryImage } from "../utils/battery-image-renderer";
 import { renderBatteryTitle } from "../utils/battery-title-renderer";
 import { batteryDataPollingRoundMs, defaultBatteryData } from "../consts/battery.consts";
 import { lunchBatterySettings } from "../utils/battery-settings-luncher";
@@ -37,17 +37,22 @@ export class BatteryStatusAction extends SingletonAction<BatteryMonitorSettings>
     battery: si.Systeminformation.BatteryData,
     settings: BatteryMonitorSettings,
     setTitle: (title: string) => Promise<void>,
-    setImage: (image: string, options?: ImageOptions | undefined) => Promise<void>
+    setImage: (image: string, options?: ImageOptions | undefined) => Promise<void>,
+    showAlert: () => Promise<void>
   ) {
     this.batteryData = adaptBatteryData(battery);
     const batteryTitle = renderBatteryTitle(this.batteryData, settings);
-    const batteryImage = renderBattery(this.batteryData, settings);
+    const batteryImage = renderBatteryImage(this.batteryData, settings);
 
-    setTitle(`${batteryTitle}`);
-    setImage(`data:image/svg+xml;base64,${btoa(batteryImage)}`, {
+    await setTitle(batteryTitle);
+    await setImage(`data:image/svg+xml;base64,${btoa(batteryImage)}`, {
       target: Target.HardwareAndSoftware,
       state: 1,
     });
+
+    if (!this.batteryData.isValid) {
+      await showAlert();
+    }
   }
 
   override async onWillAppear(ev: WillAppearEvent<BatteryMonitorSettings>): Promise<void> {
@@ -69,7 +74,8 @@ export class BatteryStatusAction extends SingletonAction<BatteryMonitorSettings>
         data,
         ev.payload.settings,
         (title) => ev.action.setTitle(title),
-        (image, opts) => ev.action.setImage(image, opts)
+        (image, opts) => ev.action.setImage(image, opts),
+        () => ev.action.showAlert()
       );
     }, batteryDataPollingRoundMs);
   }
